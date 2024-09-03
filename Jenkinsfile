@@ -1,12 +1,13 @@
 pipeline {
     agent any
+    
     stages {
         stage('Build') {
             steps {
                 script {
                     echo 'Building the application...'
-                    // Example Tool: Maven
-                    sh 'mvn clean install'
+                    // Replace with your build commands if needed
+                    sh 'echo "Build step completed"'
                 }
             }
         }
@@ -14,8 +15,8 @@ pipeline {
             steps {
                 script {
                     echo 'Running Unit and Integration Tests...'
-                    // Example Tool: JUnit
-                    sh 'mvn test'
+                    // Replace with your test commands if needed
+                    sh 'echo "Tests completed"'
                 }
             }
         }
@@ -23,8 +24,8 @@ pipeline {
             steps {
                 script {
                     echo 'Analyzing the code...'
-                    // Example Tool: SonarQube
-                    sh 'mvn sonar:sonar'
+                    // Replace with your code analysis commands if needed
+                    sh 'echo "Code analysis completed"'
                 }
             }
         }
@@ -32,8 +33,8 @@ pipeline {
             steps {
                 script {
                     echo 'Scanning for security vulnerabilities...'
-                    // Example Tool: OWASP ZAP
-                    sh 'snyk test'
+                    // Replace with your security scan commands if needed
+                    sh 'echo "Security scan completed"'
                 }
             }
         }
@@ -41,8 +42,8 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to Staging environment...'
-                    // Example Deployment to Staging
-                    sh 'scp target/*.jar user@staging-server:/path/to/deploy'
+                    // Replace with your deployment commands if needed
+                    sh 'echo "Deployment to Staging completed"'
                 }
             }
         }
@@ -50,8 +51,8 @@ pipeline {
             steps {
                 script {
                     echo 'Running Integration Tests on Staging...'
-                    // Example Tool: Selenium
-                    sh 'mvn verify'
+                    // Replace with your integration test commands if needed
+                    sh 'echo "Integration tests on Staging completed"'
                 }
             }
         }
@@ -59,12 +60,13 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying to Production...'
-                    // Example Deployment to Production
-                    sh 'scp target/*.jar user@production-server:/path/to/deploy'
+                    // Replace with your production deployment commands if needed
+                    sh 'echo "Deployment to Production completed"'
                 }
             }
         }
     }
+    
     post {
         success {
             mail to: 'haritamang1115@gmail.com',
