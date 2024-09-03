@@ -67,12 +67,12 @@ pipeline {
     }
     post {
         success {
-            mail to: 'your-email@example.com',
+            mail to: 'haritamang1115@gmail.com',
                 subject: "Pipeline Successful",
                 body: "The pipeline completed successfully."
         }
         failure {
-            mail to: 'your-email@example.com',
+            mail to: 'haritamang1115@gmail.com',
                 subject: "Pipeline Failed",
                 body: "The pipeline failed."
         }
