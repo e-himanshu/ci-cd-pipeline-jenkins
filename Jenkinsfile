@@ -11,8 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', 
-                          userRemoteConfigs: [[url: 'https://github.com/e-himanshu/ci-cd-pipeline-jenkins.git']]])
+                git url: 'https://github.com/e-himanshu/ci-cd-pipeline-jenkins.git', branch: 'main'
             }
         }
         stage('Build') {
