@@ -1,82 +1,95 @@
 pipeline {
     agent any
-    
+
+    environment {
+        SMTP_SERVER = 'smtp.gmail.com'
+        SMTP_PORT = '587'
+        EMAIL_FROM = 'bhattaraihimanshu426@gmail.com'
+        EMAIL_TO = 'haritamang1115@gmail.com'
+        EMAIL_SUBJECT_SUCCESS = 'Pipeline Successful'
+        EMAIL_SUBJECT_FAILURE = 'Pipeline Failed'
+        // Assuming you have added your credentials in Jenkins credentials manager
+        EMAIL_CREDENTIALS_ID = 'qjul xnkj jhyu zmar' // Replace with your Jenkins credentials ID
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', 
+                          userRemoteConfigs: [[url: 'https://github.com/e-himanshu/ci-cd-pipeline-jenkins.git']]])
+            }
+        }
         stage('Build') {
             steps {
-                script {
-                    echo 'Building the application...'
-                    // Replace with your build commands if needed
-                    sh 'echo "Build step completed"'
-                }
+                echo 'Building the application...'
+                sh 'echo Build step completed'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo 'Running Unit and Integration Tests...'
-                    // Replace with your test commands if needed
-                    sh 'echo "Tests completed"'
-                }
+                echo 'Running Unit and Integration Tests...'
+                sh 'echo Tests completed'
             }
         }
         stage('Code Analysis') {
             steps {
-                script {
-                    echo 'Analyzing the code...'
-                    // Replace with your code analysis commands if needed
-                    sh 'echo "Code analysis completed"'
-                }
+                echo 'Analyzing the code...'
+                sh 'echo Code analysis completed'
             }
         }
         stage('Security Scan') {
             steps {
-                script {
-                    echo 'Scanning for security vulnerabilities...'
-                    // Replace with your security scan commands if needed
-                    sh 'echo "Security scan completed"'
-                }
+                echo 'Scanning for security vulnerabilities...'
+                sh 'echo Security scan completed'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                script {
-                    echo 'Deploying to Staging environment...'
-                    // Replace with your deployment commands if needed
-                    sh 'echo "Deployment to Staging completed"'
-                }
+                echo 'Deploying to Staging environment...'
+                sh 'echo Deployment to Staging completed'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                script {
-                    echo 'Running Integration Tests on Staging...'
-                    // Replace with your integration test commands if needed
-                    sh 'echo "Integration tests on Staging completed"'
-                }
+                echo 'Running Integration Tests on Staging...'
+                sh 'echo Integration tests on Staging completed'
             }
         }
         stage('Deploy to Production') {
             steps {
-                script {
-                    echo 'Deploying to Production...'
-                    // Replace with your production deployment commands if needed
-                    sh 'echo "Deployment to Production completed"'
-                }
+                echo 'Deploying to Production...'
+                sh 'echo Deployment to Production completed'
             }
         }
     }
-    
-  post {
+    post {
         success {
-            mail to: 'haritamang1115@gmail.com',
-                 subject: "Build Successful: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                 body: "The build was successful.\n\nCheck console output at ${env.BUILD_URL}."
+            script {
+                def mailCredentials = credentials(EMAIL_CREDENTIALS_ID)
+                emailext(
+                    to: EMAIL_TO,
+                    subject: EMAIL_SUBJECT_SUCCESS,
+                    body: 'The Jenkins pipeline has completed successfully.',
+                    smtpServer: SMTP_SERVER,
+                    smtpPort: SMTP_PORT,
+                    smtpUsername: mailCredentials.username,
+                    smtpPassword: mailCredentials.password
+                )
+            }
         }
         failure {
-            mail to: 'haritamang1115@gmail.com',
-                 subject: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}",
-                 body: "The build failed.\n\nCheck console output at ${env.BUILD_URL}."
+            script {
+                def mailCredentials = credentials(EMAIL_CREDENTIALS_ID)
+                emailext(
+                    to: EMAIL_TO,
+                    subject: EMAIL_SUBJECT_FAILURE,
+                    body: 'The Jenkins pipeline has failed. Please check the logs for details.',
+                    smtpServer: SMTP_SERVER,
+                    smtpPort: SMTP_PORT,
+                    smtpUsername: mailCredentials.username,
+                    smtpPassword: mailCredentials.password
+                )
+            }
         }
     }
 }
