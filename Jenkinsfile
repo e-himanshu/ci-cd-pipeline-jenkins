@@ -2,13 +2,10 @@ pipeline {
     agent any
 
     environment {
-        SMTP_SERVER = 'smtp.gmail.com'
-        SMTP_PORT = '587'
         EMAIL_FROM = 'bhattaraihimanshu426@gmail.com'
         EMAIL_TO = 'bhattaraihimanshu426@gmail.com'
         EMAIL_SUBJECT_SUCCESS = 'Pipeline Successful'
         EMAIL_SUBJECT_FAILURE = 'Pipeline Failed'
-        EMAIL_CREDENTIALS_ID = 'gboa zvqc fvgt tigd' // Update this with your Jenkins credentials ID
     }
 
     stages {
@@ -67,10 +64,7 @@ pipeline {
                 to: EMAIL_TO,
                 subject: EMAIL_SUBJECT_SUCCESS,
                 body: 'The Jenkins pipeline has completed successfully.',
-                smtpServer: SMTP_SERVER,
-                smtpPort: SMTP_PORT,
-                smtpUsername: EMAIL_FROM,
-                smtpPassword: 'gboa zvqc fvgt tigd' // Use your app-specific password here
+                from: EMAIL_FROM
             )
         }
         failure {
@@ -78,10 +72,7 @@ pipeline {
                 to: EMAIL_TO,
                 subject: EMAIL_SUBJECT_FAILURE,
                 body: 'The Jenkins pipeline has failed. Please check the logs for details.',
-                smtpServer: SMTP_SERVER,
-                smtpPort: SMTP_PORT,
-                smtpUsername: EMAIL_FROM,
-                smtpPassword: 'gboa zvqc fvgt tigd' // Use your app-specific password here
+                from: EMAIL_FROM
             )
         }
     }
